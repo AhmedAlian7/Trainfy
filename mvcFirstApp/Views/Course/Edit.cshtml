@@ -1,6 +1,6 @@
 ﻿@model Course
 @{
-    ViewData["Title"] = "Add Course";
+    ViewData["Title"] = "Edit Course";
 }
 
 <div class="container-fluid">
@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="card-body p-5">
-                    <form method="post" action="/Course/SaveAdd" id="courseForm" novalidate>
+                    <form method="post" action="/Course/SaveEdit/@Model.Id" id="courseForm" novalidate>
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <!-- Title Field -->
@@ -69,7 +69,7 @@
                                    type="number"
                                    class="form-control form-control-lg rounded-3"
                                    placeholder="100"
-                                   required/>
+                                   required />
                             <span asp-validation-for="Degree" class="text-danger"></span>
                             <div class="invalid-feedback">
                                 Please enter a valid maximum grade (1-100).
@@ -89,7 +89,7 @@
                                    type="number"
                                    class="form-control form-control-lg rounded-3"
                                    placeholder="60"
-                                   required/>
+                                   required />
                             <span asp-validation-for="MinDegree" class="text-danger"></span>
                             <div class="invalid-feedback">
                                 Please enter a valid minimum passing grade (0-100).
@@ -164,7 +164,7 @@
                             <button type="submit" class="btn btn-primary btn-lg px-5 rounded-3" id="submitBtn">
                                 <span class="spinner-border spinner-border-sm me-2 d-none" id="loadingSpinner"></span>
                                 <i class="fas fa-save me-2" id="saveIcon"></i>
-                                Save Course
+                                Save Edits
                             </button>
                         </div>
 

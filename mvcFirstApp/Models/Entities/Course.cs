@@ -1,8 +1,11 @@
-﻿namespace mvcFirstApp.Models.Entities
+﻿using mvcFirstApp.CustomAttribute;
+
+namespace mvcFirstApp.Models.Entities
 {
     public class Course
     {
         public int Id { get; set; }
+        [Unique]
         public string Title { get; set; } = string.Empty;
         public int Credits { get; set; }
         public int Degree { get; set; }

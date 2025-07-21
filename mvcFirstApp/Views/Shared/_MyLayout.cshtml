@@ -67,6 +67,9 @@
                     <li>
                         <a asp-area="" asp-controller="Instructor" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Instructor" ? "active" : "")">Instructors</a>
                     </li>
+                    <li>
+                        <a asp-area="" asp-controller="Course" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Course" ? "active" : "")">Courses</a>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>

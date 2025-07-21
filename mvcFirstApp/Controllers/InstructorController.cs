@@ -28,6 +28,7 @@ namespace mvcFirstApp.Controllers
 
             var paginatedInstructors = PaginatedList<Instructor>.CreateAsync(instructors, page, pageSize);
 
+            ViewBag.Departments = _context.Departments.ToList();
             return View("Index", paginatedInstructors);
         }
         [HttpGet]

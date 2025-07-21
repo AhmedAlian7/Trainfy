@@ -36,7 +36,13 @@
         <div class="col-md-3">
             <select class="form-select" id="departmentFilter">
                 <option value="">All Departments</option>
-                <!-- Add department options dynamically -->
+                @if (ViewBag.Departments != null)
+                {
+                    @foreach (var department in (IEnumerable<Department>)ViewBag.Departments)
+                    {
+                        <option value="@department.Id">@department.Name</option>
+                    }
+                }
             </select>
         </div>
     </div>
