@@ -1,0 +1,402 @@
+﻿@model Course
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+                    <h2 class="mb-0 fw-bold">
+                        <i class="fas fa-book-open me-2"></i>Add New Course
+                    </h2>
+                </div>
+
+                <div class="card-body p-5">
+                    <form method="post" action="/Course/SaveAdd" id="courseForm" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Title Field -->
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label fw-semibold">
+                                <i class="fas fa-book me-2 text-primary"></i>Course Title *
+                            </label>
+                            <input asp-for="Title"
+                                   type="text"
+                                   class="form-control form-control-lg rounded-3"
+                                   placeholder="Enter course title"
+                                   required
+                                   minlength="3"
+                                   maxlength="200" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please enter a valid course title (3-200 characters).
+                            </div>
+                            <div class="valid-feedback">
+                                Course title looks good!
+                            </div>
+                        </div>
+
+                        <!-- Credits Field -->
+                        <div class="mb-4">
+                            <label asp-for="Credits" class="form-label fw-semibold">
+                                <i class="fas fa-graduation-cap me-2 text-primary"></i>Credit Hours *
+                            </label>
+                            <input asp-for="Credits"
+                                   type="number"
+                                   class="form-control form-control-lg rounded-3"
+                                   placeholder="3"
+                                   required
+                                   min="1"
+                                   max="12" />
+                            <span asp-validation-for="Credits" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please enter valid credit hours (1-12).
+                            </div>
+                            <div class="valid-feedback">
+                                Credit hours are valid!
+                            </div>
+                            <small class="text-muted">Enter number of credit hours (1-12)</small>
+                        </div>
+
+                        <!-- Degree Field -->
+                        <div class="mb-4">
+                            <label asp-for="Degree" class="form-label fw-semibold">
+                                <i class="fas fa-trophy me-2 text-primary"></i>Maximum Grade *
+                            </label>
+                            <input asp-for="Degree"
+                                   type="number"
+                                   class="form-control form-control-lg rounded-3"
+                                   placeholder="100"
+                                   required/>
+                            <span asp-validation-for="Degree" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please enter a valid maximum grade (1-100).
+                            </div>
+                            <div class="valid-feedback">
+                                Maximum grade is valid!
+                            </div>
+                            <small class="text-muted">Maximum possible grade for this course (1-100)</small>
+                        </div>
+
+                        <!-- Minimum Degree Field -->
+                        <div class="mb-4">
+                            <label asp-for="MinDegree" class="form-label fw-semibold">
+                                <i class="fas fa-percentage me-2 text-primary"></i>Minimum Passing Grade *
+                            </label>
+                            <input asp-for="MinDegree"
+                                   type="number"
+                                   class="form-control form-control-lg rounded-3"
+                                   placeholder="60"
+                                   required/>
+                            <span asp-validation-for="MinDegree" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please enter a valid minimum passing grade (0-100).
+                            </div>
+                            <div class="valid-feedback">
+                                Minimum passing grade is valid!
+                            </div>
+                            <small class="text-muted">Minimum grade required to pass this course (0-100)</small>
+                        </div>
+
+                        <!-- Department Field -->
+                        <div class="mb-4">
+                            <label asp-for="DepartmentId" class="form-label fw-semibold">
+                                <i class="fas fa-building me-2 text-primary"></i>Department *
+                            </label>
+                            <select asp-for="DepartmentId"
+                                    class="form-select form-select-lg rounded-3"
+                                    required>
+                                <option value="" disabled selected>Choose a department...</option>
+                                @if (ViewBag.Departments != null)
+                                {
+                                    @foreach (var department in ViewBag.Departments)
+                                    {
+                                        <option value="@department.Id">
+                                            @department.Name
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please select a department.
+                            </div>
+                            <div class="valid-feedback">
+                                Department selected!
+                            </div>
+                        </div>
+
+                        <!-- Instructor Field -->
+                        <div class="mb-5">
+                            <label asp-for="InstructorId" class="form-label fw-semibold">
+                                <i class="fas fa-user-tie me-2 text-primary"></i>Instructor *
+                            </label>
+                            <select asp-for="InstructorId"
+                                    class="form-select form-select-lg rounded-3"
+                                    required>
+                                <option value="" disabled selected>Choose an instructor...</option>
+                                @if (ViewBag.Instructors != null)
+                                {
+                                    @foreach (var instructor in ViewBag.Instructors)
+                                    {
+                                        <option value="@instructor.Id">
+                                            @instructor.Name
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="InstructorId" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please select an instructor.
+                            </div>
+                            <div class="valid-feedback">
+                                Instructor selected!
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/Course" class="btn btn-outline-secondary btn-lg px-4 me-md-2 rounded-3">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5 rounded-3" id="submitBtn">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="loadingSpinner"></span>
+                                <i class="fas fa-save me-2" id="saveIcon"></i>
+                                Save Course
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    .form-control.is-valid:focus, .form-select.is-valid:focus {
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
+    }
+
+    .form-control.is-invalid:focus, .form-select.is-invalid:focus {
+        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.15);
+    }
+
+    .input-group-text {
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('courseForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const saveIcon = document.getElementById('saveIcon');
+
+        // Custom validation messages
+        const validationMessages = {
+            Title: 'Please enter a valid course title (3-200 characters).',
+            Credits: 'Please enter valid credit hours (1-12).',
+            Degree: 'Please select a degree level.',
+            MinDegree: 'Please select minimum degree requirement.',
+            DepartmentId: 'Please select a department.',
+            InstructorId: 'Please select an instructor.'
+        };
+
+        // Real-time validation
+        form.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('input', function() {
+                validateField(this);
+            });
+
+            field.addEventListener('blur', function() {
+                validateField(this);
+            });
+        });
+
+        // Degree level validation - ensure MinDegree is not higher than Degree
+        const degreeField = document.getElementById('Degree');
+        const minDegreeField = document.getElementById('MinDegree');
+
+        function validateDegreeRequirement() {
+            if (degreeField.value && minDegreeField.value) {
+                const degree = parseInt(degreeField.value);
+                const minDegree = parseInt(minDegreeField.value);
+
+                if (minDegree > degree) {
+                    minDegreeField.setCustomValidity('Minimum degree requirement cannot be higher than the course degree level.');
+                    minDegreeField.classList.add('is-invalid');
+                    minDegreeField.classList.remove('is-valid');
+                    return false;
+                } else {
+                    minDegreeField.setCustomValidity('');
+                    validateField(minDegreeField);
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        degreeField.addEventListener('change', validateDegreeRequirement);
+        minDegreeField.addEventListener('change', validateDegreeRequirement);
+
+        // Custom validation function
+        function validateField(field) {
+            const fieldName = field.name;
+            let isValid = true;
+            let customMessage = '';
+
+            // Remove existing validation classes
+            field.classList.remove('is-valid', 'is-invalid');
+
+            // Check if field is required and empty
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                isValid = false;
+                customMessage = `${fieldName} is required.`;
+            }
+
+            // Field-specific validations
+            if (field.value.trim()) {
+                switch (fieldName) {
+                    case 'Title':
+                        if (field.value.trim().length < 3 || field.value.trim().length > 200) {
+                            isValid = false;
+                            customMessage = validationMessages.Title;
+                        }
+                        break;
+
+                    case 'Credits':
+                        const credits = parseInt(field.value);
+                        if (isNaN(credits) || credits < 1 || credits > 12) {
+                            isValid = false;
+                            customMessage = validationMessages.Credits;
+                        }
+                        break;
+
+                    case 'Degree':
+                        const degree = parseInt(field.value);
+                        if (isNaN(degree) || degree < 1 || degree > 100) {
+                            isValid = false;
+                            customMessage = validationMessages.Degree;
+                        }
+                        break;
+
+                    case 'MinDegree':
+                        const minDegree = parseInt(field.value);
+                        if (isNaN(minDegree) || minDegree < 0 || minDegree > 100) {
+                            isValid = false;
+                            customMessage = validationMessages.MinDegree;
+                        }
+                        break;
+
+                    case 'DepartmentId':
+                        if (!field.value) {
+                            isValid = false;
+                            customMessage = validationMessages.DepartmentId;
+                        }
+                        break;
+
+                    case 'InstructorId':
+                        if (!field.value) {
+                            isValid = false;
+                            customMessage = validationMessages.InstructorId;
+                        }
+                        break;
+                }
+            }
+
+            // Apply validation state
+            if (isValid) {
+                field.classList.add('is-valid');
+            } else {
+                field.classList.add('is-invalid');
+                // Set custom validation message
+                field.setCustomValidity(customMessage);
+            }
+
+            // Clear custom validity if valid
+            if (isValid) {
+                field.setCustomValidity('');
+            }
+        }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate all fields
+            let formIsValid = true;
+            form.querySelectorAll('input, select').forEach(field => {
+                validateField(field);
+                if (!field.checkValidity()) {
+                    formIsValid = false;
+                }
+            });
+
+            // Additional degree validation
+            if (!validateDegreeRequirement()) {
+                formIsValid = false;
+            }
+
+            if (formIsValid) {
+                // Show loading state
+                submitBtn.disabled = true;
+                loadingSpinner.classList.remove('d-none');
+                saveIcon.classList.add('d-none');
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+                // Submit the form
+                setTimeout(() => {
+                    form.submit();
+                }, 500);
+            } else {
+                // Focus on first invalid field
+                const firstInvalidField = form.querySelector('.is-invalid');
+                if (firstInvalidField) {
+                    firstInvalidField.focus();
+                }
+
+                // Show error message
+                showToast('Please correct the highlighted errors before submitting.', 'error');
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+    });
+</script>
