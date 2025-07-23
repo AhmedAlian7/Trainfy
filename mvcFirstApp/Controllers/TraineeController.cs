@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using mvcFirstApp.Models.Data;
 using mvcFirstApp.Models.Entities;
 using mvcFirstApp.Services;
@@ -145,6 +146,108 @@ namespace mvcFirstApp.Controllers
             _context.Trainees.Remove(trainee);
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult GetResult(int Id, int crsId)
+        {
+            // view model
+            var courseRes = _context.CourseResults
+                .Include(c => c.Trainee)
+                .Include(c => c.Course)
+                .FirstOrDefault(c => c.TraineeId == Id
+                && c.CourseId == crsId);
+
+            if (courseRes == null)
+            {
+                return NotFound("No result found for this trainee in the specified course");
+            }
+
+
+            var passed = courseRes.Degree >= courseRes.Course.MinDegree;
+            var percentage = courseRes.Course.Degree > 0
+                ? (decimal)courseRes.Degree / courseRes.Course.Degree * 100
+                : 0;
+            var deptName = _context.Departments
+                .Where(d => d.Id == courseRes.Course.DepartmentId)
+                .Select(d => d.Name)
+                .FirstOrDefault() ?? "N/A";
+            var viewModel =  new TraineeAllResultsVM
+            {
+                TraineeName = courseRes.Trainee?.Name ?? "",
+                CourseName = courseRes.Course.Title,
+                CourseCredits = courseRes.Course.Credits,
+                CourseDept = deptName,
+                Grade = courseRes.Degree,
+                MaxGrade = courseRes.Course.Degree,
+                MinDegree = courseRes.Course.MinDegree,
+                IsPassed = passed,
+                Color = passed ? "green" : "red",
+                Percentage = percentage,
+                PerformanceLevel = GetPerformanceLevel
+                    (courseRes.Degree, courseRes.Course.MinDegree, courseRes.Course.Degree)
+            };
+
+            ViewBag.TraineeId = Id;
+            return View("ResultDetails", viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllResults(int Id)
+        {
+            // view model
+            var res = _context.CourseResults
+                .Include(c => c.Trainee)
+                .Include(c => c.Course)
+                .Where(c => c.TraineeId == Id)
+                .ToList();
+
+            if (res == null || res.Count == 0)
+            {
+                return NotFound("No results found for this trainee");
+            }
+            var viewModel = res.Select(courseRes =>
+            {
+                var passed = courseRes.Degree >= courseRes.Course.MinDegree;
+                var percentage = courseRes.Course.Degree > 0
+                    ? (decimal)courseRes.Degree / courseRes.Course.Degree * 100
+                    : 0;
+
+                return new TraineeAllResultsVM
+                {
+                    TraineeName = courseRes.Trainee.Name,
+                    CourseName = courseRes.Course.Title,
+                    CourseId = courseRes.CourseId,
+                    Grade = courseRes.Degree,
+                    MaxGrade = courseRes.Course.Degree,
+                    MinDegree = courseRes.Course.Degree,
+                    IsPassed = passed,
+                    Color = passed ? "green" : "red",
+                    Percentage = percentage,
+                    PerformanceLevel = GetPerformanceLevel
+                        (courseRes.Degree, courseRes.Course.MinDegree, courseRes.Course.Degree)
+                };
+            }).ToList();
+            ViewBag.TraineeId = Id; 
+            return View("AllResults", viewModel); 
+        }
+        private static string GetPerformanceLevel(int actualGrade, int minDegree, int maxDegree)
+        {
+            if (maxDegree <= minDegree) return "Invalid";
+            if (actualGrade < minDegree) return "F"; // Failed
+
+            var passingRange = maxDegree - minDegree;
+            var gradeAboveMin = actualGrade - minDegree;
+            var performancePercentage = (double)gradeAboveMin / passingRange;
+
+            return performancePercentage switch
+            {
+                >= 0.85 => "A",
+                >= 0.70 => "B",
+                >= 0.5 => "C",
+                >= 0.25 => "D",
+                _ => "D-"
+            };
         }
     }   
 }

@@ -1,0 +1,249 @@
+@model List<TraineeAllResultsVM>
+
+@{
+    ViewData["Title"] = "All Results";
+    var traineeName = Model.FirstOrDefault()?.TraineeName ?? "Trainee";
+}
+
+<div class="container-fluid px-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-gradient-primary text-white">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="fas fa-user-graduate fa-2x"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-1 fw-bold">@traineeName</h2>
+                            <p class="mb-0 opacity-75">Academic Performance Overview</p>
+                        </div>
+                        <div class="ms-auto text-end">
+                            <span class="badge bg-light text-dark fs-6 px-3 py-2">
+                                @Model.Count Course@(Model.Count != 1 ? "s" : "")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-success mb-2">
+                        <i class="fas fa-trophy fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold text-success">@Model.Count(r => r.IsPassed)</h4>
+                    <p class="text-muted mb-0">Passed Courses</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-danger mb-2">
+                        <i class="fas fa-times-circle fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold text-danger">@Model.Count(r => !r.IsPassed)</h4>
+                    <p class="text-muted mb-0">Failed Courses</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-primary mb-2">
+                        <i class="fas fa-percentage fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold text-primary">@(Model.Any() ? Math.Round(Model.Average(r => r.Percentage), 1) : 0)%</h4>
+                    <p class="text-muted mb-0">Average Score</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-info mb-2">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold text-info">@Math.Round(((double)Model.Count(r => r.IsPassed) / Model.Count) * 100, 1)%</h4>
+                    <p class="text-muted mb-0">Pass Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold text-dark">
+                            <i class="fas fa-list-alt me-2 text-primary"></i>
+                            Course Results
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-1"></i>Export
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-print me-1"></i>Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4 py-3 fw-semibold text-dark">#</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark">Course Name</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark text-center">Score</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark text-center">Percentage</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark text-center">Performance</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark text-center">Status</th>
+                                    <th class="px-4 py-3 fw-semibold text-dark text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    var result = Model[i];
+                                    <tr class="border-bottom">
+                                        <td class="px-4 py-3 align-middle">
+                                            <span class="fw-medium text-muted">@(i + 1)</span>
+                                        </td>
+                                        <td class="px-4 py-3 align-middle">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2">
+                                                        <i class="fas fa-book text-primary"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fw-semibold">@result.CourseName</h6>
+                                                    <small class="text-muted">Course ID: @result.CourseId</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 text-center align-middle">
+                                            <span class="fw-bold fs-5">@result.Grade</span>
+                                            <span class="text-muted">/@result.MaxGrade</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-center align-middle">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <span class="fw-bold mb-1" style="color: @result.Color">
+                                                    @Math.Round(result.Percentage, 1)%
+                                                </span>
+                                                <div class="progress" style="width: 60px; height: 6px;">
+                                                    <div class="progress-bar"
+                                                         style="width: @(result.Percentage)%; background-color: @result.Color;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 text-center align-middle">
+                                            <span class="badge fs-6 px-3 py-2 text-capitalize
+                                                    @(result.PerformanceLevel == "A" ? "bg-success" :
+                                                                                                    result.PerformanceLevel == "B" ? "bg-primary" :
+                                                                                                    result.PerformanceLevel == "C" ? "bg-warning" :
+                                                                                                    "bg-danger")">
+                                            @result.PerformanceLevel
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-center align-middle">
+                                        @if (result.IsPassed)
+                                            {
+                                                <span class="badge bg-success fs-6 px-3 py-2">
+                                                    <i class="fas fa-check me-1"></i>Passed
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger fs-6 px-3 py-2">
+                                                    <i class="fas fa-times me-1"></i>Failed
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="px-4 py-3 text-center align-middle">
+                                            <a href="@Url.Action("GetResult", new { Id = ViewBag.TraineeId ?? 1, crsId = result.CourseId })"
+                                               class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-eye me-1"></i>View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .progress {
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+
+    .progress-bar {
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+
+    .badge {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+</style>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
