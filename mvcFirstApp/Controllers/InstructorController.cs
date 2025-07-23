@@ -91,7 +91,7 @@ namespace mvcFirstApp.Controllers
                 return NotFound();
             }
 
-            ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.Departments = _context.Departments.ToList();    
             return View("Edit", instructor);
         }
         [HttpPost]
