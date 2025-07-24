@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
+using mvcFirstApp.Models.Entities;
+using mvcFirstApp.Repositories;
 using mvcFirstApp.Services;
 
 namespace mvcFirstApp
@@ -18,6 +20,9 @@ namespace mvcFirstApp
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<FileUploadService>();
+            builder.Services.AddScoped<IRepository<Course>,Repository<Course>>();
+            builder.Services.AddScoped<IRepository<Department>,Repository<Department>>();
+            builder.Services.AddScoped<IRepository<Instructor>,Repository<Instructor>>();
 
             var app = builder.Build();
 

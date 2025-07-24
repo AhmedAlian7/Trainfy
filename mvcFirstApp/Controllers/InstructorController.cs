@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
 using mvcFirstApp.Models.Entities;
+using mvcFirstApp.Repositories;
 using mvcFirstApp.Services;
 using mvcFirstApp.ViewModels;
 
@@ -9,13 +10,21 @@ namespace mvcFirstApp.Controllers
 {
     public class InstructorController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IRepository<Course> _Courses;
+        private readonly IRepository<Department> _Departments;
+        private readonly IRepository<Instructor> _Instructors;
         public readonly FileUploadService _fileUploadService;
 
-        public InstructorController(AppDbContext context, FileUploadService fileUploadService)
+        public InstructorController
+            (FileUploadService fileUploadService,
+            IRepository<Course> Courserepository
+            ,IRepository<Department> deptRepo
+            ,IRepository<Instructor> instructors)
         {
-            _context = context;
             _fileUploadService = fileUploadService;
+            _Courses = Courserepository;
+            _Departments = deptRepo;
+            _Instructors = instructors;
         }
         [HttpGet]
         public IActionResult Index(int page = 1)
@@ -24,28 +33,23 @@ namespace mvcFirstApp.Controllers
 
 
 
-            var instructors = _context.Instructors.Include(i => i.Department).AsQueryable();
+            var paginatedInstructors = _Instructors.GetAll(page, pageSize,
+                includeProperties: "Department");
 
-            var paginatedInstructors = PaginatedList<Instructor>.CreateAsync(instructors, page, pageSize);
-
-            ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.Departments = _Departments.GetAll().ToList();
             return View("Index", paginatedInstructors);
         }
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var instructor = _context.Instructors
-                .Include(i => i.Department)
-                .Include(i => i.Courses)
-                .FirstOrDefault(i => i.Id == id);
+            var instructor = _Instructors.GetById(id, "Department,Courses");
 
             return View("Details", instructor);
         }
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Departments = _context.Departments.ToList();
-            ViewBag.Courses = _context.Courses.ToList();
+            ViewBag.Departments = _Departments.GetAll().ToList();
             return View("Add");
         }
         [HttpPost]
@@ -57,6 +61,7 @@ namespace mvcFirstApp.Controllers
                     instructorFromReq.Salary <= 0 ||
                     instructorFromReq.DepartmentId <= 0)
             {
+                ViewBag.Departments = _Departments.GetAll().ToList();
                 return View("Add", instructorFromReq);
             }
 
@@ -69,29 +74,31 @@ namespace mvcFirstApp.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Departments = _context.Departments.ToList();
+                    ViewBag.Departments = _Departments.GetAll().ToList();
                     return View("Add", instructorFromReq);
                 }
             }
 
-            _context.Instructors.Add(instructorFromReq);
-            _context.SaveChanges();
+            _Instructors.Add(instructorFromReq);
+            _Instructors.SaveChanges();
 
             return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var instructor = _context.Instructors
-                .Include(i => i.Department)
-                .Include(i => i.Courses)
-                .FirstOrDefault(i => i.Id == id);
+            if (id <= 0)
+            {
+                return BadRequest("Invalid instructor ID.");
+            }
+            var instructor = _Instructors.GetById(id, "Department,Courses");
+
             if (instructor == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Departments = _context.Departments.ToList();    
+            ViewBag.Departments = _Departments.GetAll().ToList();    
             return View("Edit", instructor);
         }
         [HttpPost]
@@ -99,11 +106,11 @@ namespace mvcFirstApp.Controllers
         {
             if (instructorFromReq.Name == null || instructorFromReq.Email == null || instructorFromReq.Salary == 0)
             {
-                ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.Departments = _Departments.GetAll().ToList();
                 return View("Edit", instructorFromReq);
             }
 
-            var existingInstructor = _context.Instructors.Find(instructorFromReq.Id);
+            var existingInstructor = _Instructors.GetById(instructorFromReq.Id);
             if (existingInstructor == null)
             {
                 return NotFound();
@@ -133,12 +140,12 @@ namespace mvcFirstApp.Controllers
                 catch (InvalidOperationException ex)
                 {
                     ModelState.AddModelError("ImageFile", ex.Message);
-                    ViewBag.Departments = _context.Departments.ToList();
+                    ViewBag.Departments = _Departments.GetAll().ToList();
                     return View("Edit", instructorFromReq);
                 }
             }
 
-            _context.SaveChanges();
+            _Departments.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -147,7 +154,7 @@ namespace mvcFirstApp.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var instructor = _context.Instructors.Find(id);
+            var instructor = _Instructors.GetById(id);
             if (instructor == null)
             {
                 return NotFound();
@@ -156,8 +163,8 @@ namespace mvcFirstApp.Controllers
             {
                 _fileUploadService.DeleteFile(instructor.ImageUrl);
             }
-            _context.Instructors.Remove(instructor); 
-            _context.SaveChanges();
+            _Instructors.Delete(instructor.Id); 
+            _Instructors.SaveChanges();
 
             return RedirectToAction("Index");
         }

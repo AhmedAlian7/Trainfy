@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
 using mvcFirstApp.Models.Entities;
+using mvcFirstApp.Repositories;
 using mvcFirstApp.Services;
 using mvcFirstApp.ViewModels;
 
@@ -9,34 +10,37 @@ namespace mvcFirstApp.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly AppDbContext _context;
-        public CourseController() { _context = new AppDbContext(); }
+        private readonly IRepository<Course> _courses;
+        private readonly IRepository<Department> _departments;
+        private readonly IRepository<Instructor> _instructors;
+
+        public CourseController
+            (IRepository<Course> Courserepository
+            ,IRepository<Department> deptRepo
+            ,IRepository<Instructor> instructors)
+        {
+            _courses = Courserepository; 
+            _departments = deptRepo;
+            _instructors = instructors;
+        }
 
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
             const int pageSize = 6; // Number of courses per page
 
+            var courses = _courses.GetAll(page, pageSize,
+                includeProperties: "Department,Instructor");
 
-            var courses = _context.Courses
-                .Include(c => c.Department)
-                .Include(c => c.Instructor)
-                .AsQueryable();
 
-            var paginatedCourses = PaginatedList<Course>.CreateAsync(courses, page, pageSize);
-
-            ViewBag.Departments = _context.Departments.ToList();
-            return View("Index", paginatedCourses);
+            ViewBag.Departments = _departments.GetAll().ToList();
+            return View("Index", courses);
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var course = _context.Courses
-                .Include(c => c.Department)
-                .Include(c => c.Instructor)
-                .Include(c => c.CourseResults)
-                .FirstOrDefault(c => c.Id == id);
+            var course = _courses.GetById(id, "Department,Instructor,CourseResults");
             if (course == null)
             {
                 return NotFound();
@@ -47,8 +51,8 @@ namespace mvcFirstApp.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Departments = _context.Departments.ToList();
-            ViewBag.Instructors = _context.Instructors.ToList();
+            ViewBag.Departments = _departments.GetAll().ToList();
+            ViewBag.Instructors = _instructors.GetAll().ToList();
             return View("Add");
         }
 
@@ -57,29 +61,26 @@ namespace mvcFirstApp.Controllers
         {
             if (!ModelState.IsValid || string.IsNullOrEmpty(courseFromReq.Title) || courseFromReq.Credits <= 0 || courseFromReq.Degree < 0 || courseFromReq.MinDegree < 0)
             {
-                ViewBag.Departments = _context.Departments.ToList();
-                ViewBag.Instructors = _context.Instructors.ToList();
+                ViewBag.Departments = _departments.GetAll().ToList();
+                ViewBag.Instructors = _instructors.GetAll().ToList();
                 return View("Add", courseFromReq);
             }
-            _context.Courses.Add(courseFromReq);
-            _context.SaveChanges();
+            _courses.Add(courseFromReq);
+            _courses.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var course = _context.Courses
-                .Include(c => c.Department)
-                .Include(c => c.Instructor)
-                .FirstOrDefault(c => c.Id == id);
+            var course = _courses.GetById(id, "Department,Instructor,CourseResults");
             if (course == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Departments = _context.Departments.ToList();
-            ViewBag.Instructors = _context.Instructors.ToList();
+            ViewBag.Departments = _departments.GetAll().ToList();
+            ViewBag.Instructors = _instructors.GetAll().ToList();
             return View("Edit", course);
         }
         [HttpPost]
@@ -87,11 +88,11 @@ namespace mvcFirstApp.Controllers
         {
             if (!ModelState.IsValid || string.IsNullOrEmpty(courseFromReq.Title) || courseFromReq.Credits <= 0 || courseFromReq.Degree < 0 || courseFromReq.MinDegree < 0)
             {
-                ViewBag.Departments = _context.Departments.ToList();
-                ViewBag.Instructors = _context.Instructors.ToList();
+                ViewBag.Departments = _departments.GetAll().ToList();
+                ViewBag.Instructors = _instructors.GetAll().ToList();
                 return View("Edit", courseFromReq);
             }
-            var existingCourse = _context.Courses.FirstOrDefault(c => c.Id == courseFromReq.Id);
+            var existingCourse = _courses.GetById(id);
             if (existingCourse == null)
             {
                 return NotFound();
@@ -103,7 +104,7 @@ namespace mvcFirstApp.Controllers
             existingCourse.DepartmentId = courseFromReq.DepartmentId;
             existingCourse.InstructorId = courseFromReq.InstructorId;
             
-            _context.SaveChanges();
+            _courses.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -111,13 +112,8 @@ namespace mvcFirstApp.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var course = _context.Courses.Find(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            _context.Courses.Remove(course);
-            _context.SaveChanges();
+            _courses.Delete(id);
+            _courses.SaveChanges();
             return RedirectToAction("Index");
         }
     }

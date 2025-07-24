@@ -1,11 +1,446 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-	Layout = "_MyLayout";
+    ViewData["Title"] = "Home - Academy Management System";
+    Layout = "_MyLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-	<h2 class="lead">This is my first ASP.NET Core MVC application.</h2>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); min-height: 100vh; display: flex; align-items: center;">
+    
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <!-- Modern Hero Content Card -->
+                <div class="hero-content-card bg-opacity-5 backdrop-filter-blur rounded-4 p-5 border border-white border-opacity-10 shadow-lg">
+                    <!-- Premium Badge -->
+                    <div class="d-inline-flex align-items-center bg-gradient rounded-pill px-4 py-2 mb-4" style="background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)); backdrop-filter: blur(20px);">
+                        <div class="badge-icon me-2">
+                            <i class="bi bi-mortarboard-fill text-warning fs-5"></i>
+                        </div>
+                        <span class="text-white fw-medium">Premium Academy Platform</span>
+                        <div class="ms-2">
+                            <i class="bi bi-star-fill text-warning" style="font-size: 0.75rem;"></i>
+                        </div>
+                    </div>
 
-</div>
+                    <!-- Dynamic Main Heading -->
+                    <h1 class="hero-title mb-4">
+                        <span class="d-block text-white fw-light fs-3 mb-2 opacity-75">Transform Education with</span>
+                        <span class="d-block display-1 fw-bold lh-1 text-white mb-2" style="text-shadow: 0 4px 20px rgba(0,0,0,0.3);">Smart Academy</span>
+                        <span class="d-block h3 fw-normal text-gradient" style="background: linear-gradient(135deg, #ffd700, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Management System</span>
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="hero-subtitle lead mb-4 text-white" style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;">
+                        Experience next-generation education management with AI-powered insights, seamless collaboration, and intuitive design that puts learning first.
+                    </p>
+
+                    <!-- Modern CTA Section -->
+                    <div class="hero-actions mb-5">
+                        <div class="d-flex flex-wrap gap-3 mb-4">
+                            <a href="/Course/Index" class="btn btn-gradient btn-lg px-5 py-3 rounded-pill shadow-lg fw-semibold text-decoration-none position-relative overflow-hidden" style="background: linear-gradient(135deg, #fff, #f8f9fa); color: #333; border: none;">
+                                <span class="position-relative">
+                                    <i class="bi bi-rocket-takeoff me-2"></i>Start Learning
+                                </span>
+                            </a>
+                            <a href="/Trainee/Index" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-semibold border-2 backdrop-filter-blur" style="backdrop-filter: blur(10px); background: rgba(255,255,255,0.1);">
+                                <i class="bi bi-people-fill me-2"></i>Join Community
+                            </a>
+                        </div>
+
+                        <!-- Quick Access Links -->
+                        <div class="quick-links d-flex flex-wrap gap-4 text-white" style="font-size: 0.9rem;">
+                            <a href="/Instructor/Index" class="text-white text-decoration-none opacity-75 hover-opacity-100 transition-all">
+                                <i class="bi bi-person-workspace me-1"></i>For Instructors
+                            </a>
+                            <a href="/Home/About" class="text-white text-decoration-none opacity-75 hover-opacity-100 transition-all">
+                                <i class="bi bi-info-circle me-1"></i>Learn More
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Redesigned Stats with Modern Cards -->
+                    <div class="hero-stats row g-3">
+                        <div class="col-4">
+                            <div class="stat-card text-center p-3 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
+                                <div class="stat-number h4 fw-bold text-white mb-1">1.2K+</div>
+                                <div class="stat-label small text-white opacity-75">Students</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-card text-center p-3 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
+                                <div class="stat-number h4 fw-bold text-white mb-1">85+</div>
+                                <div class="stat-label small text-white opacity-75">Instructors</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-card text-center p-3 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
+                                <div class="stat-number h4 fw-bold text-white mb-1">200+</div>
+                                <div class="stat-label small text-white opacity-75">Courses</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator position-absolute bottom-0 start-50 translate-middle-x text-white mb-4">
+        <div class="text-center">
+            <div class="scroll-text small mb-2 opacity-75">Discover More</div>
+            <div class="scroll-arrow-container">
+                <i class="bi bi-chevron-down fs-4 scroll-bounce"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5" style="background: #f8fafc;">
+    <div class="container py-5">
+        <!-- Section Header -->
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-dark mb-3">Comprehensive Learning Management</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">
+                Everything you need to run a successful academy, from course creation to student progress tracking.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Course Management -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100 bg-white rounded-4 p-4 shadow-sm border-0 position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 w-25 h-25" style="background: linear-gradient(135deg, #667eea, #764ba2); opacity: 0.1; border-radius: 0 1rem 0 100%;"></div>
+                    <div class="feature-icon mb-4">
+                        <div class="bg-primary bg-opacity-10 rounded-3 d-inline-flex p-3">
+                            <i class="bi bi-journal-bookmark fs-1 text-primary"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-3">Smart Course Management</h4>
+                    <p class="text-muted mb-4 lh-base">Create, organize, and manage courses with our intuitive interface. Track enrollment, assignments, and student progress effortlessly.</p>
+                    <a href="/Course/Index" class="btn btn-outline-primary rounded-pill fw-semibold">
+                        Manage Courses <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Instructor Hub -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100 bg-white rounded-4 p-4 shadow-sm border-0 position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 w-25 h-25" style="background: linear-gradient(135deg, #11998e, #38ef7d); opacity: 0.1; border-radius: 0 1rem 0 100%;"></div>
+                    <div class="feature-icon mb-4">
+                        <div class="bg-success bg-opacity-10 rounded-3 d-inline-flex p-3">
+                            <i class="bi bi-person-workspace fs-1 text-success"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-3">Expert Instructor Network</h4>
+                    <p class="text-muted mb-4 lh-base">Connect with qualified instructors, manage their profiles, and facilitate seamless communication between educators and students.</p>
+                    <a href="/Instructor/Index" class="btn btn-outline-success rounded-pill fw-semibold">
+                        View Instructors <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Student Portal -->
+            <div class="col-lg-4 col-md-6 mx-auto">
+                <div class="feature-card h-100 bg-white rounded-4 p-4 shadow-sm border-0 position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 w-25 h-25" style="background: linear-gradient(135deg, #4facfe, #00f2fe); opacity: 0.1; border-radius: 0 1rem 0 100%;"></div>
+                    <div class="feature-icon mb-4">
+                        <div class="bg-info bg-opacity-10 rounded-3 d-inline-flex p-3">
+                            <i class="bi bi-people fs-1 text-info"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-3">Student Success Hub</h4>
+                    <p class="text-muted mb-4 lh-base">Monitor student progress, manage enrollments, and provide personalized support to help every learner achieve their goals.</p>
+                    <a href="/Trainee/Index" class="btn btn-outline-info rounded-pill fw-semibold">
+                        Student Portal <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="benefits-section py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="benefits-content">
+                    <h2 class="display-5 fw-bold text-dark mb-4">Why Choose Our Academy Platform?</h2>
+                    <p class="lead text-muted mb-5">
+                        Built with modern technology and educational best practices, our platform delivers exceptional results for institutions of all sizes.
+                    </p>
+
+                    <div class="benefits-list">
+                        <div class="benefit-item d-flex align-items-start mb-4">
+                            <div class="benefit-icon me-4">
+                                <div class="bg-primary bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-shield-check fs-4 text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Secure & Reliable</h5>
+                                <p class="text-muted mb-0">Enterprise-grade security with 99.9% uptime guarantee and regular backups.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item d-flex align-items-start mb-4">
+                            <div class="benefit-icon me-4">
+                                <div class="bg-success bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-speedometer2 fs-4 text-success"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Lightning Fast</h5>
+                                <p class="text-muted mb-0">Optimized performance ensures smooth experience for all users, even during peak times.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item d-flex align-items-start mb-4">
+                            <div class="benefit-icon me-4">
+                                <div class="bg-info bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-phone fs-4 text-info"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Mobile Responsive</h5>
+                                <p class="text-muted mb-0">Access your academy from anywhere, on any device with our fully responsive design.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item d-flex align-items-start">
+                            <div class="benefit-icon me-4">
+                                <div class="bg-warning bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-graph-up-arrow fs-4 text-warning"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Analytics & Insights</h5>
+                                <p class="text-muted mb-0">Make data-driven decisions with comprehensive reporting and analytics dashboard.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="benefits-visual position-relative">
+                    <!-- Dashboard Preview -->
+                    <div class="bg-white rounded-4 shadow-lg p-4 border">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-danger rounded-circle me-2" style="width: 12px; height: 12px;"></div>
+                            <div class="bg-warning rounded-circle me-2" style="width: 12px; height: 12px;"></div>
+                            <div class="bg-success rounded-circle" style="width: 12px; height: 12px;"></div>
+                        </div>
+
+                        <!-- Mock Dashboard Content -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-4">
+                                <div class="bg-primary bg-opacity-10 rounded-3 p-3 text-center">
+                                    <i class="bi bi-people fs-4 text-primary"></i>
+                                    <div class="h5 fw-bold mt-2 mb-0">1,250</div>
+                                    <small class="text-muted">Students</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-success bg-opacity-10 rounded-3 p-3 text-center">
+                                    <i class="bi bi-journal-bookmark fs-4 text-success"></i>
+                                    <div class="h5 fw-bold mt-2 mb-0">85</div>
+                                    <small class="text-muted">Courses</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-info bg-opacity-10 rounded-3 p-3 text-center">
+                                    <i class="bi bi-person-workspace fs-4 text-info"></i>
+                                    <div class="h5 fw-bold mt-2 mb-0">42</div>
+                                    <small class="text-muted">Instructors</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mock Chart -->
+                        <div class="bg-light rounded-3 p-3" style="height: 150px; position: relative;">
+                            <small class="text-muted">Enrollment Growth</small>
+                            <div class="position-absolute bottom-0 start-0 w-100 d-flex align-items-end justify-content-between px-3 pb-3">
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 40px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 60px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 35px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 80px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 50px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 90px;"></div>
+                                <div class="bg-primary rounded-top" style="width: 8px; height: 70px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Achievement Badge -->
+                    <div class="position-absolute top-0 end-0 translate-middle">
+                        <div class="bg-warning rounded-circle p-3 shadow-lg">
+                            <i class="bi bi-award text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="position-absolute w-100 h-100" style="background-image: url('data:image/svg+xml,<svg xmlns=\" http: //www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"dots\" width=\"20\" height=\"20\" patternUnits=\"userSpaceOnUse\"><circle cx=\"10\" cy=\"10\" r=\"1\" fill=\"%23ffffff\" opacity=\"0.1\" /></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23dots)\" /></svg>');"></div>
+
+    <div class="container py-5 position-relative">
+        <div class="text-center text-white">
+            <h2 class="display-4 fw-bold mb-4">Ready to Transform Your Academy?</h2>
+            <p class="lead mb-5 mx-auto" style="max-width: 600px;">
+                Join hundreds of educational institutions already using our platform to deliver exceptional learning experiences.
+            </p>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+                <a href="/Home/About" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+                    <i class="bi bi-info-circle me-2"></i>Learn More
+                </a>
+                <a href="/Course/Index" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Get Started
+                </a>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="row justify-content-center text-center">
+                <div class="col-auto">
+                    <div class="text-white-50">
+                        <i class="bi bi-shield-check fs-4 mb-2 d-block"></i>
+                        <small>Secure Platform</small>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="text-white-50">
+                        <i class="bi bi-headset fs-4 mb-2 d-block"></i>
+                        <small>24/7 Support</small>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="text-white-50">
+                        <i class="bi bi-cloud-check fs-4 mb-2 d-block"></i>
+                        <small>Cloud Based</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Custom CSS -->
+<style>
+    .backdrop-filter-blur {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    .transition-all {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hover-opacity-100:hover {
+        opacity: 1 !important;
+    }
+
+    .scroll-bounce {
+        animation: smoothBounce 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .scroll-indicator:hover {
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+            .scroll-indicator:hover .scroll-bounce {
+                animation-duration: 0.8s;
+            }
+
+    .btn-gradient {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-gradient:hover::before {
+            left: 100%;
+        }
+
+    .feature-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid transparent;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+
+    .hero-content-card {
+        transition: all 0.3s ease;
+    }
+
+        .hero-content-card:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+        }
+
+    .stat-card {
+        transition: all 0.3s ease;
+    }
+
+        .stat-card:hover {
+            background: rgba(255,255,255,0.15) !important;
+            transform: translateY(-2px);
+        }
+
+    .hero-title {
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .hero-stats {
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .transition-all,
+    .feature-card,
+    .btn-gradient {
+        transition: none;
+    }
+
+    .hero-section {
+        will-change: transform;
+    }
+
+    .feature-card:hover {
+        will-change: transform;
+    }
+</style>
