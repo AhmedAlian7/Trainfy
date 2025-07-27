@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
 using mvcFirstApp.Models.Entities;
@@ -18,6 +19,21 @@ namespace mvcFirstApp
             // Add DbContext configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register Identity
+            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                // Configure password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                // Configure user settings
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
 
             builder.Services.AddScoped<FileUploadService>();
             builder.Services.AddScoped<IRepository<Course>,Repository<Course>>();

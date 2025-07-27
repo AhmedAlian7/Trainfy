@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
 using mvcFirstApp.Models.Entities;
@@ -8,6 +9,7 @@ using mvcFirstApp.ViewModels;
 
 namespace mvcFirstApp.Controllers
 {
+    [Authorize]
     public class InstructorController : Controller
     {
         private readonly IRepository<Course> _Courses;

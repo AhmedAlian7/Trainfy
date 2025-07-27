@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Entities;
 
 namespace mvcFirstApp.Models.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser> // DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
