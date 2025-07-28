@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\BusinessLogic\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

@@ -1,0 +1,46 @@
+﻿<div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="/Trainfy.png" alt="Trainfy Logo" class="avatar rounded-circle">
+        <h1 class="sitename">Trainfy</h1>
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">Home</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="About" class="@(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">About</a></li>
+            @* <li><a asp-area="" asp-controller="Home" asp-action="Contact" class="@(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">Contact</a></li> *@
+            <li>
+                <a asp-area="" asp-controller="Instructor" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Instructor" ? "active" : "")">Instructors</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Course" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Course" ? "active" : "")">Courses</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Trainee" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Trainee" ? "active" : "")">Trainees</a>
+            </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="d-flex align-items-center ms-3">
+            <span class="me-2 fw-bold text-primary">
+                <i class="bi bi-person-circle"></i> @User.Identity.Name
+            </span>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center ms-3">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">Login</a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-getstarted">Register Now</a>
+        </div>
+    }
+
+</div>

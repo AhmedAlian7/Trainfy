@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>@ViewData["Title"] - mvcFirstApp</title>
+    <title>@ViewData["Title"] - Trainfy</title>
     <meta name="description" content="@ViewData["Description"] ?? " Professional web application built with ASP.NET MVC"">
     <meta name="keywords" content="@ViewData["Keywords"] ?? " ASP.NET, MVC, Web Development"">
 
@@ -33,67 +33,9 @@
 <body class="index-page">
 
     <header id="header" class="header d-flex align-items-center fixed-top">
-        <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+        
+        <partial name="_NavBar"/>
 
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center me-auto me-xl-0">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="~/assets/img/logo.png" alt="mvcFirstApp Logo"> -->
-                <h1 class="sitename">mvcFirstApp</h1>
-            </a>
-
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About" class="@(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">About</a></li>
-                    <li class="dropdown">
-                        <a href="#"><span>Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a asp-area="" asp-controller="Services" asp-action="WebDesign">Web Design</a></li>
-                            <li><a asp-area="" asp-controller="Services" asp-action="WebDevelopment">Web Development</a></li>
-                            <li><a asp-area="" asp-controller="Services" asp-action="ProductManagement">Product Management</a></li>
-                            <li class="dropdown">
-                                <a href="#"><span>Consulting</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a asp-area="" asp-controller="Services" asp-action="TechnicalConsulting">Technical Consulting</a></li>
-                                    <li><a asp-area="" asp-controller="Services" asp-action="BusinessAnalysis">Business Analysis</a></li>
-                                    <li><a asp-area="" asp-controller="Services" asp-action="ProjectManagement">Project Management</a></li>
-                                    <li><a asp-area="" asp-controller="Services" asp-action="DigitalStrategy">Digital Strategy</a></li>
-                                    <li><a asp-area="" asp-controller="Services" asp-action="SystemIntegration">System Integration</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact" class="@(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">Contact</a></li>
-                    <li>
-                        <a asp-area="" asp-controller="Instructor" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Instructor" ? "active" : "")">Instructors</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Course" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Course" ? "active" : "")">Courses</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Trainee" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Trainee" ? "active" : "")">Trainees</a>
-                    </li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
-
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class="d-flex align-items-center ms-3">
-                    <span class="me-2 fw-bold text-primary">
-						<i class="bi bi-person-circle"></i> @User.Identity.Name    
-                    </span>
-                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
-                    </form>
-                </div>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary ms-3">Login</a>
-            }
-
-        </div>
     </header>
 
     <main class="main">

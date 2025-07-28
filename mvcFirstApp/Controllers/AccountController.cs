@@ -28,7 +28,7 @@ namespace mvcFirstApp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel loginVm)
+        public async Task<IActionResult> Login(LoginViewModel loginVm, string ReturnUrl = "")
         {
 
             if (!ModelState.IsValid)

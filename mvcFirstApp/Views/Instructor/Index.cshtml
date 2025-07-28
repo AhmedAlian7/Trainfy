@@ -52,7 +52,7 @@
         @foreach (var instructor in Model)
         {
             <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card h-100 shadow-sm instructor-card">
+                <div class="card h-100 shadow-sm instructor-card" data-department="@(instructor.Department != null ? instructor.Department.Id.ToString() : "")">
                     <div class="card-header bg-gradient-primary text-white p-4">
                         <div class="d-flex align-items-center">
                             <div class="avatar-container me-3">
@@ -241,6 +241,18 @@
             const isVisible = name.includes(searchTerm) || email.includes(searchTerm);
 
             card.closest('.col-lg-4').style.display = isVisible ? '' : 'none';
+        });
+    });
+
+    // Department filter functionality
+    document.getElementById('departmentFilter').addEventListener('change', function() {
+        const selectedDept = this.value;
+        const cards = document.querySelectorAll('.instructor-card');
+        cards.forEach(card => {
+            const cardDept = card.getAttribute('data-department');
+            // Show if matches or if 'All Departments' is selected
+            const show = !selectedDept || cardDept === selectedDept;
+            card.closest('.col-lg-4').style.display = show ? '' : 'none';
         });
     });
 
