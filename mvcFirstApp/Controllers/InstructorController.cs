@@ -12,14 +12,14 @@ namespace mvcFirstApp.Controllers
     [Authorize]
     public class InstructorController : Controller
     {
-        private readonly IRepository<Course> _Courses;
+        private readonly ICourseRepository _Courses;
         private readonly IRepository<Department> _Departments;
         private readonly IRepository<Instructor> _Instructors;
         public readonly FileUploadService _fileUploadService;
 
         public InstructorController
             (FileUploadService fileUploadService,
-            IRepository<Course> Courserepository
+            ICourseRepository Courserepository
             ,IRepository<Department> deptRepo
             ,IRepository<Instructor> instructors)
         {

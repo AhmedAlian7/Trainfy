@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using mvcFirstApp.Models.Entities;
 using mvcFirstApp.ViewModels;
+using System.Security.Claims;
 
 namespace mvcFirstApp.Controllers
 {
@@ -86,6 +87,8 @@ namespace mvcFirstApp.Controllers
                 Email = registerVm.Email,
                 FullName = registerVm.FullName 
             };
+            await userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));
+
             var result = await userManager.CreateAsync(user, registerVm.Password);
             if (result.Succeeded)
             {
@@ -99,6 +102,13 @@ namespace mvcFirstApp.Controllers
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError(string.Empty, e.Description));
             }
             return View(registerVm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

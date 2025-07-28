@@ -1,16 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using mvcFirstApp.Models.Data;
+using mvcFirstApp.Models.Entities;
 using mvcFirstApp.ViewModels;
 
 namespace mvcFirstApp.Repositories
 {
-    public class TraineeRepository : ITraineeRepository 
+    public class TraineeRepository : Repository<Trainee>, ITraineeRepository
     {
         private readonly AppDbContext _context;
-        public TraineeRepository(AppDbContext context)
+
+        public TraineeRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }
+
         public TraineeAllResultsVM GetTraineeResult(int traineeId, int courseId)
         {
             var courseRes = _context.CourseResults
@@ -76,7 +79,7 @@ namespace mvcFirstApp.Repositories
                     CourseId = courseRes.CourseId,
                     Grade = courseRes.Degree,
                     MaxGrade = courseRes.Course.Degree,
-                    MinDegree = courseRes.Course.MinDegree, // Fixed: was using Degree instead of MinDegree
+                    MinDegree = courseRes.Course.MinDegree,
                     IsPassed = passed,
                     Color = passed ? "green" : "red",
                     Percentage = percentage,
@@ -85,7 +88,7 @@ namespace mvcFirstApp.Repositories
             }).ToList();
         }
 
-        private static string GetPerformanceLevel(int actualGrade, int minDegree, int maxDegree)
+        public static string GetPerformanceLevel(int actualGrade, int minDegree, int maxDegree)
         {
             if (maxDegree <= minDegree) return "Invalid";
             if (actualGrade < minDegree) return "F"; // Failed
@@ -105,3 +108,4 @@ namespace mvcFirstApp.Repositories
         }
     }
 }
+    

@@ -36,9 +36,10 @@ namespace mvcFirstApp
 
 
             builder.Services.AddScoped<FileUploadService>();
-            builder.Services.AddScoped<IRepository<Course>,Repository<Course>>();
+            builder.Services.AddScoped<ICourseRepository, CourseRepository>();  
             builder.Services.AddScoped<IRepository<Department>,Repository<Department>>();
             builder.Services.AddScoped<IRepository<Instructor>,Repository<Instructor>>();
+            builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 
             var app = builder.Build();
 

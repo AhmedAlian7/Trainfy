@@ -12,12 +12,12 @@ namespace mvcFirstApp.Controllers
     [Authorize]
     public class CourseController : Controller
     {
-        private readonly IRepository<Course> _courses;
+        private readonly ICourseRepository _courses;
         private readonly IRepository<Department> _departments;
         private readonly IRepository<Instructor> _instructors;
 
         public CourseController
-            (IRepository<Course> Courserepository
+            (ICourseRepository Courserepository
             ,IRepository<Department> deptRepo
             ,IRepository<Instructor> instructors)
         {
@@ -117,6 +117,18 @@ namespace mvcFirstApp.Controllers
             _courses.Delete(id);
             _courses.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult GetTraineesResults(int Id) // Course Id
+        {
+            var viewModel = _courses.GetAllTraineeResults(Id);
+
+            if (viewModel == null || viewModel.Count == 0)
+            {
+                return NotFound("No results found for this course");
+            }
+
+            return View("TraineesResults",viewModel); 
         }
     }
 }

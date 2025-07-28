@@ -77,7 +77,21 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a asp-area="" asp-controller="Home" asp-action="About" class="btn-getstarted">Get Started</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="d-flex align-items-center ms-3">
+                    <span class="me-2 fw-bold text-primary">
+						<i class="bi bi-person-circle"></i> @User.Identity.Name    
+                    </span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary ms-3">Login</a>
+            }
 
         </div>
     </header>
