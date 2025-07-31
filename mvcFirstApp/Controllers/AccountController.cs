@@ -87,11 +87,12 @@ namespace mvcFirstApp.Controllers
                 Email = registerVm.Email,
                 FullName = registerVm.FullName 
             };
-            await userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));
 
             var result = await userManager.CreateAsync(user, registerVm.Password);
             if (result.Succeeded)
             {
+                // Add claim only after user is created
+                await userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));
                 // Assign the user to a role if needed
 
                 TempData["SuccessMessage"] = "Registration successful! Please log in with your new account.";

@@ -18,7 +18,7 @@ namespace mvcFirstApp
 
             // Add DbContext configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("HostingConnection")));
 
             // Register Identity
             builder.Services.AddIdentity<AppUser, IdentityRole>(options =>

@@ -31,9 +31,8 @@ namespace mvcFirstApp.Models.Data
             var connectionstring = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build()
-                .GetSection("ConnectionStrings:DefaultConnection").Value;
+                .GetSection("ConnectionStrings:HostingConnection").Value;
 
-            connectionstring ??= "Server=.; Database=mvcFirstApp; User Id=sa; Password=SA123456; Encrypt=False; TrustServerCertificate=True;";
             optionsBuilder.UseSqlServer(connectionstring);
         }
     }
