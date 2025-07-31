@@ -13,7 +13,8 @@ namespace mvcFirstApp.Repositories
             _context = context;
         }
 
-        List<CourseAllResultsViewModel> ICourseRepository.GetAllTraineeResults(int courseId)
+        List<CourseAllResultsViewModel> ICourseRepository.GetAllTraineeResults
+            (int courseId, string searchTerm, string sortBy, string sortDirection, int minDegree, int maxDegree)
         {
             try
             {
@@ -34,7 +35,9 @@ namespace mvcFirstApp.Repositories
                 if (!courseResults.Any())
                     return new List<CourseAllResultsViewModel>();
 
-                var viewModels = courseResults.Select(cr => new CourseAllResultsViewModel
+
+
+                var query = courseResults.Select(cr => new CourseAllResultsViewModel
                 {
                     Course = new CourseInfoViewModel
                     {
@@ -70,14 +73,61 @@ namespace mvcFirstApp.Repositories
                     SearchTerm = "",
                     SortBy = "Name",
                     SortDirection = "asc"
-                }).ToList();
+                }).AsQueryable();
 
-                return viewModels;
+
+                // Apply search filter
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query = query.Where(cr => cr.Results.Any(r => r.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                                                  r.Email.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)));
+                }
+                // Apply degree filter
+                if (minDegree > 0 || maxDegree > 0)
+                {
+                    query = query.Where(cr => cr.Results.Any(r => r.Degree >= minDegree && r.Degree <= maxDegree));
+                }
+                // Apply sorting
+                if (!string.IsNullOrEmpty(sortBy))
+                {
+                    if (sortDirection.Equals("desc", StringComparison.OrdinalIgnoreCase))
+                    {
+                        query = sortBy switch
+                        {
+                            "Name" => query.OrderByDescending(cr => cr.Results.FirstOrDefault().Name),
+                            "Degree" => query.OrderByDescending(cr => cr.Results.FirstOrDefault().Degree),
+                            "Email" => query.OrderByDescending(cr => cr.Results.FirstOrDefault().Email),
+                            "Department" => query.OrderByDescending(cr => cr.Results.FirstOrDefault().DepartmentName),
+                            _ => query.OrderByDescending(cr => cr.Results.FirstOrDefault().Name)
+                        };
+                    }
+                    else
+                    {
+                        query = sortBy switch
+                        {
+                            "Name" => query.OrderBy(cr => cr.Results.FirstOrDefault().Name),
+                            "Degree" => query.OrderBy(cr => cr.Results.FirstOrDefault().Degree),
+                            "Email" => query.OrderBy(cr => cr.Results.FirstOrDefault().Email),
+                            "Department" => query.OrderByDescending(cr => cr.Results.FirstOrDefault().DepartmentName),
+                            _ => query.OrderBy(cr => cr.Results.FirstOrDefault().Name)
+                        };
+                    }
+                }
+
+                // Convert to list and return
+                var results = query.ToList();
+                if (results.Count == 0)
+                {
+                    return new List<CourseAllResultsViewModel>();
+                }
+                return results;
+
             }
             catch (Exception ex)
             {
                 return new List<CourseAllResultsViewModel>();
             }
+
         }
 
         private string CalculateGradeLetter(int degree, int maxDegree)

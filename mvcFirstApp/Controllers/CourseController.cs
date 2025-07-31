@@ -6,6 +6,7 @@ using mvcFirstApp.Models.Entities;
 using mvcFirstApp.Repositories;
 using mvcFirstApp.Services;
 using mvcFirstApp.ViewModels;
+using System.Globalization;
 
 namespace mvcFirstApp.Controllers
 {
@@ -119,9 +120,11 @@ namespace mvcFirstApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult GetTraineesResults(int Id) // Course Id
+        public IActionResult GetTraineesResults(int Id // Course Id
+            , string searchTerm = "", string sortBy = "", string sortDirection = "", int minDegree =0, int maxDegree = 0) 
         {
-            var viewModel = _courses.GetAllTraineeResults(Id);
+            var viewModel = _courses.GetAllTraineeResults
+                (Id, searchTerm, sortBy, sortDirection, minDegree, maxDegree);
 
             if (viewModel == null || viewModel.Count == 0)
             {

@@ -62,7 +62,7 @@
         @foreach (var course in Model)
         {
             <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card h-100 shadow-sm course-card">
+                <div class="card h-100 shadow-sm course-card" data-department-id="@(course.Department != null ? course.Department.Id.ToString() : "")" data-credits="@course.Credits">
                     <div class="card-header bg-gradient-primary text-white p-4">
                         <div class="d-flex align-items-center">
                             <div class="course-icon-container me-3">
@@ -295,25 +295,13 @@
 
             // Check department filter
             if (selectedDepartment) {
-                const departmentBadge = card.querySelector('.course-info .badge');
-                let departmentText = '';
-
-                if (departmentBadge && !departmentBadge.textContent.includes('Not Assigned')) {
-                    departmentText = departmentBadge.textContent.trim();
-                }
-
-                // Get department name from ViewBag (you'll need to pass department names as data attributes)
-                const departmentElement = card.querySelector('[data-department-id]');
-                const courseDepartmentId = departmentElement ? departmentElement.getAttribute('data-department-id') : '';
-
+                const courseDepartmentId = card.getAttribute('data-department-id');
                 isVisible = isVisible && (courseDepartmentId === selectedDepartment);
             }
 
             // Check credits filter
             if (selectedCredits) {
-                const creditsBadge = card.querySelector('.credits-badge .badge').textContent;
-                const credits = parseInt(creditsBadge.match(/\d+/)[0]);
-
+                const credits = parseInt(card.getAttribute('data-credits'));
                 if (selectedCredits === '5' && credits < 5) {
                     isVisible = false;
                 } else if (selectedCredits !== '5' && credits.toString() !== selectedCredits) {

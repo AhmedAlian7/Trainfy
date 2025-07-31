@@ -1,0 +1,72 @@
+﻿<footer id="footer" class="footer bg-light border-top mt-5 pt-4">
+    <div class="container footer-top">
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-6 footer-about">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center mb-2">
+                    <img src="/Trainfy.png" alt="Trainfy Logo" class="avatar rounded-circle me-2" style="width:40px;height:40px;">
+                    <span class="sitename fw-bold fs-4">Trainfy</span>
+                </a>
+                <div class="footer-contact pt-2 small">
+                    <p>123 Learning Avenue</p>
+                    <p>Cairo, Egypt</p>
+                    <p class="mt-2"><strong>Phone:</strong> <span>+20 100 123 4567</span></p>
+                    <p><strong>Email:</strong> <span>info@trainfy.com</span></p>
+                </div>
+                <div class="social-links d-flex mt-3">
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h5 class="fw-semibold">Useful Links</h5>
+                <ul class="list-unstyled">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Terms">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h5 class="fw-semibold">Features</h5>
+                <ul class="list-unstyled">
+                    <li><a asp-area="" asp-controller="Instructor" asp-action="Index">Instructors</a></li>
+                    <li><a asp-area="" asp-controller="Course" asp-action="Index">Courses</a></li>
+                    <li><a asp-area="" asp-controller="Trainee" asp-action="Index">Trainees</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-12 footer-newsletter">
+                <h5 class="fw-semibold">Subscribe to our Newsletter</h5>
+                <p class="small">Get the latest updates, news, and offers from Trainfy directly to your inbox.</p>
+                <form asp-area="" asp-controller="Newsletter" asp-action="Subscribe" method="post" class="php-email-form mt-2">
+                    @Html.AntiForgeryToken()
+                    <div class="input-group mb-2">
+                        <input type="email" name="email" class="form-control" placeholder="Your Email" required aria-label="Email address">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </div>
+                    <span class="text-danger small" id="newsletter-validation"></span>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center mt-4 small">
+        <p class="mb-1">&copy; @DateTime.Now.Year <strong class="sitename">Trainfy</strong>. All Rights Reserved.</p>
+        <div class="credits">
+            Designed &amp; developed by Ahmed Alian | Professional ASP.NET Developer
+        </div>
+    </div>
+</footer>
