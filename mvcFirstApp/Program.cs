@@ -34,7 +34,7 @@ namespace mvcFirstApp
             })
             .AddEntityFrameworkStores<AppDbContext>();
 
-
+            // Register custom services and repositories
             builder.Services.AddScoped<FileUploadService>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();  
             builder.Services.AddScoped<IRepository<Department>,Repository<Department>>();
