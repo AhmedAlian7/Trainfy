@@ -54,7 +54,7 @@ else
                         <div class="avatar-container me-3">
                             @if (!string.IsNullOrEmpty(Model.ImageUrl))
                             {
-                                    <img src="@Model.ImageUrl" alt="@Model.Name" class="profile-image avatar rounded-circle" />
+                                    <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Name" class="profile-image avatar rounded-circle" />
                             }
                             else
                             {
