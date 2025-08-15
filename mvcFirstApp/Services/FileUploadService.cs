@@ -1,14 +1,23 @@
-﻿namespace mvcFirstApp.Services
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+
+namespace mvcFirstApp.Services
 {
     public class FileUploadService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        //private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly Cloudinary _cloudinary;
         private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
         private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
 
-        public FileUploadService(IWebHostEnvironment webHostEnvironment)
+        public FileUploadService(IConfiguration config)
         {
-            _webHostEnvironment = webHostEnvironment;
+            var account = new Account(
+            config["Cloudinary:CloudName"],
+            config["Cloudinary:ApiKey"],
+            config["Cloudinary:ApiSecret"]
+            );
+            _cloudinary = new Cloudinary(account);
         }
 
         public string UploadFile(IFormFile file, string folderName)
@@ -32,22 +41,20 @@
             // Create unique filename
             var fileName = Guid.NewGuid().ToString() + fileExtension;
 
-            // Create upload directory if it doesn't exist
-            var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, folderName);
-            if (!Directory.Exists(uploadPath))
-            {
-                Directory.CreateDirectory(uploadPath);
-            }
 
-            // Save file
-            var filePath = Path.Combine(uploadPath, fileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
 
-            // Return relative path for storing in database
-            return $"/{folderName}/{fileName}";
+
+            using var stream = file.OpenReadStream();
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(file.FileName, stream),
+                Folder = folderName
+            };
+
+            var result = _cloudinary.Upload(uploadParams);
+
+            return result.SecureUrl.ToString();
         }
 
         public bool DeleteFile(string filePath)
@@ -57,19 +64,56 @@
 
             try
             {
-                var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, filePath.TrimStart('/'));
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                    return true;
-                }
+                var publicId = ExtractPublicIdFromUrl(filePath);
+                if (string.IsNullOrEmpty(publicId))
+                    return false;
+
+                var deleteParams = new DeletionParams(publicId);
+                var result = _cloudinary.Destroy(deleteParams);
+
+                return result.Result == "ok";
             }
             catch (Exception)
             {
-                // Log exception if needed
+                return false;
             }
+        }
 
-            return false;
+        private string ExtractPublicIdFromUrl(string cloudinaryUrl)
+        {
+            if (string.IsNullOrEmpty(cloudinaryUrl))
+                return null;
+
+            try
+            {
+                // Cloudinary URL format: https://res.cloudinary.com/{cloud_name}/{resource_type}/{type}/{version}/{public_id}.{format}
+                // We need to extract the public_id part
+
+                var uri = new Uri(cloudinaryUrl);
+                var pathSegments = uri.AbsolutePath.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+                // Skip the first segments (cloud_name, resource_type, type, version) and get the public_id
+                if (pathSegments.Length >= 4)
+                {
+                    // Join all segments after version to handle folder structures
+                    var publicIdWithExtension = string.Join("/", pathSegments.Skip(4));
+
+                    // Remove file extension
+                    var lastDotIndex = publicIdWithExtension.LastIndexOf('.');
+                    if (lastDotIndex > 0)
+                    {
+                        return publicIdWithExtension.Substring(0, lastDotIndex);
+                    }
+
+                    return publicIdWithExtension;
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

@@ -34,6 +34,10 @@ namespace mvcFirstApp
             })
             .AddEntityFrameworkStores<AppDbContext>();
 
+            // Register Cloudinary configuration
+            builder.Services.AddScoped<FileUploadService>();
+
+
             // Register custom services and repositories
             builder.Services.AddScoped<FileUploadService>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();  
